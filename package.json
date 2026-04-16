@@ -1,0 +1,17 @@
+{
+  "name": "realtime-chat",
+  "version": "1.0.0",
+  "description": "WebSocket 기반 실시간 채팅 애플리케이션",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "nodemon server/index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "ws": "^8.16.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}

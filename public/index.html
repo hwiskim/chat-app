@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>실시간 채팅</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <div class="login-wrapper">
+    <div class="login-card">
+      <div class="logo">
+        <span class="logo-icon">💬</span>
+        <h1>실시간 채팅</h1>
+        <p>WebSocket 기반 채팅 애플리케이션</p>
+      </div>
+
+      <form id="loginForm">
+        <div class="input-group">
+          <label for="nickname">닉네임</label>
+          <input
+            type="text"
+            id="nickname"
+            placeholder="닉네임을 입력하세요 (최대 20자)"
+            maxlength="20"
+            autocomplete="off"
+            required
+          />
+        </div>
+
+        <div class="input-group">
+          <label>채팅방 선택</label>
+          <div id="roomList" class="room-list">
+            <div class="loading">방 목록 불러오는 중...</div>
+          </div>
+        </div>
+
+        <button type="submit" id="enterBtn" disabled>입장하기</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const WS_URL = `ws://${location.host}`;
+    const ws = new WebSocket(WS_URL);
+    let selectedRoom = null;
+
+    ws.addEventListener('message', (event) => {
+      const data = JSON.parse(event.data);
+      if (data.type === 'rooms') renderRooms(data.list);
+    });
+
+    function renderRooms(list) {
+      const container = document.getElementById('roomList');
+      container.innerHTML = '';
+      list.forEach(({ name, count }) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'room-btn' + (selectedRoom === name ? ' selected' : '');
+        btn.innerHTML = `<span class="room-name">${name}</span><span class="room-count">${count}명</span>`;
+        btn.addEventListener('click', () => {
+          selectedRoom = name;
+          document.querySelectorAll('.room-btn').forEach((b) => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          document.getElementById('enterBtn').disabled = false;
+        });
+        container.appendChild(btn);
+      });
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const nickname = document.getElementById('nickname').value.trim();
+      if (!nickname || !selectedRoom) return;
+
+      // 세션 스토리지에 저장 후 채팅 페이지로 이동
+      sessionStorage.setItem('nickname', nickname);
+      sessionStorage.setItem('room', selectedRoom);
+      ws.close();
+      location.href = '/chat.html';
+    });
+  </script>
+</body>
+</html>

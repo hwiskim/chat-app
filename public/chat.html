@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>채팅방</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <div class="chat-layout">
+    <!-- 사이드바 -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <span class="logo-icon">💬</span>
+        <span>실시간 채팅</span>
+      </div>
+
+      <div class="sidebar-section">
+        <h3>채팅방</h3>
+        <ul id="sideRoomList" class="side-room-list"></ul>
+      </div>
+
+      <div class="sidebar-section">
+        <h3>참여자 <span id="userCount">0</span>명</h3>
+        <ul id="userList" class="user-list"></ul>
+      </div>
+
+      <div class="sidebar-footer">
+        <span id="myNickname"></span>
+        <button id="leaveBtn" class="leave-btn">나가기</button>
+      </div>
+    </aside>
+
+    <!-- 메인 채팅 영역 -->
+    <main class="chat-main">
+      <header class="chat-header">
+        <h2 id="roomTitle">채팅방</h2>
+        <div class="connection-status" id="statusBadge">
+          <span class="status-dot"></span>
+          <span id="statusText">연결 중...</span>
+        </div>
+      </header>
+
+      <div class="messages" id="messages"></div>
+
+      <form class="input-bar" id="messageForm">
+        <input
+          type="text"
+          id="msgInput"
+          placeholder="메시지를 입력하세요..."
+          maxlength="500"
+          autocomplete="off"
+          disabled
+        />
+        <button type="submit" id="sendBtn" disabled>전송</button>
+      </form>
+    </main>
+  </div>
+
+  <script src="/js/chat.js"></script>
+</body>
+</html>
